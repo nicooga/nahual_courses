@@ -1,0 +1,7 @@
+{
+  "name": "nahual_courses",
+  "version": "0.0.0",
+  "description": "An e-learning site from Nahual",
+  "main": "index.js",
+  "license": "MIT"
+}
