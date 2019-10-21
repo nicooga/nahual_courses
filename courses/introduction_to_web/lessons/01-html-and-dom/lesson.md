@@ -2,10 +2,14 @@
 
 Escribi ésta leccion para probar como funciona este sitio.
 
-~~~js
+~~~ruby
+class Asdf {
+
+}
+
 const some = 'javascript'
 
-conts code = _ => {
+const code = _ => {
   returns 'more code'
 }
 
