@@ -5,33 +5,42 @@ import {
   Route,
   useParams
 } from 'react-router-dom'
+import styled from 'styled-components'
 
 import ApolloProvider from './ApolloProvider'
 
 import CourseList from './CourseList'
-import Course from './Course'
+import CourseViewer from './CourseViewer'
 import CourseLesson from './CourseLesson'
+
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10vh 20vw;
+`
 
 const App = _props => (
   <ApolloProvider>
     <Router>
-      <Switch>
-        <Route
-          path='/cursos/:courseSlug/lecciones/:lessonSlug'
-          component={_props => {
-            const { courseSlug, lessonSlug } = useParams()
-            return (<CourseLesson {...{courseSlug, lessonSlug}} />)
-          }}
-        />
-        <Route
-          path='/cursos/:slug'
-          component={_props => {
-            const { slug } = useParams()
-            return (<Course slug={slug} />)
-          }}
-        />
-        <Route path='/' component={CourseList} />
-      </Switch>
+      <Root>
+        <Switch>
+          <Route
+            path='/cursos/:courseSlug/lecciones/:lessonSlug'
+            component={_props => {
+              const { courseSlug, lessonSlug } = useParams()
+              return (<CourseViewer courseSlug={courseSlug} lessonSlug={lessonSlug} />)
+            }}
+          />
+          <Route
+            path='/cursos/:courseSlug'
+            component={_props => {
+              const { courseSlug } = useParams()
+              return (<CourseViewer courseSlug={courseSlug} />)
+            }}
+          />
+          <Route path='/' component={CourseList} />
+        </Switch>
+      </Root>
     </Router>
   </ApolloProvider>
 )
