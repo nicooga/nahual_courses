@@ -4,7 +4,9 @@ Escribi ésta leccion para probar como funciona este sitio.
 
 ~~~ruby
 class Asdf {
-
+  constructor() {
+    return 'asdf'
+  }
 }
 
 const some = 'javascript'

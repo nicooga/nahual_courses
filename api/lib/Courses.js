@@ -6,50 +6,53 @@ import realSlugify from 'slugify'
 import { keyBy } from 'lodash'
 import { highlight } from 'highlight.js'
 
+const COURSES_DIR = '../courses'
+
 marked.setOptions({ highlight: (code, lang) => highlight(lang, code).value })
 
 const readYAMLFile = path => path |> fs.readFileSync(#, 'utf8') |> YAML.parse(#)
 const slugify = str => realSlugify(str).toLowerCase()
 
-//class Course {
-  //constructor(courseName) {
-    //const dataDir      = path.join(COURSES_DIR, courseName)
-    //const manifestPath = path.join(dataDir, 'manifest.yml')
-    //const lessonsDir   = path.join(dataDir, 'lessons')
-  //}
-//}
+class Course {
+  // Takes the course name which matches the folder name under /courses
+  constructor(courseName) {
+    this._dataDir = path.join(COURSES_DIR, courseName)
 
-const COURSES_DIR = '../courses'
+    const manifest = path.join(this._dataDir, 'manifest.yml') |> readYAMLFile(#)
 
-const COURSES = fs.readdirSync(COURSES_DIR).map(courseName => {
-  const dataDir      = path.join(COURSES_DIR, courseName)
-  const manifestPath = path.join(dataDir, 'manifest.yml')
-  const lessonsDir   = path.join(dataDir, 'lessons')
+    this.title    = manifest.title
+    this.slug     = slugify(this.title)
+  }
 
-  const { title } = readYAMLFile(manifestPath)
-  const slug = slugify(title)
+  lessons() {
+    const lessonsDir = path.join(this._dataDir, 'lessons')
+    return fs.readdirSync(lessonsDir).map(lessonName => new Lesson(lessonsDir, lessonName))
+  }
 
-  const lessons =
-    fs.readdirSync(lessonsDir).map(lessonName => {
-      const lessonDir          = path.join(lessonsDir, lessonName)
-      const lessonManifestPath = path.join(lessonDir, 'manifest.yml')
-      const lessonBodyPath     = path.join(lessonDir, 'lesson.md')
+  lessonsBySlug() { return this.lessons() |> keyBy(#, 'slug') }
+}
 
-      const { title } = readYAMLFile(lessonManifestPath)
-      const slug = slugify(title)
-      const body = lessonBodyPath |> fs.readFileSync(#, 'utf8') |> marked(#)
+class Lesson {
+  constructor(lessonsDir, lessonName) {
+    this._dataDir = path.join(lessonsDir, lessonName)
 
-      const lesson = { title, body, slug }
+    const manifest = path.join(this._dataDir, 'manifest.yml') |> readYAMLFile(#)
 
-      return lesson
-    })
+    this.title = manifest.title
+    this.slug = slugify(this.title)
+  }
 
-  const lessonsBySlug = lessons |> keyBy(#, 'slug')
-  const course = { slug, title, lessons, lessonsBySlug }
+  body() {
+    return (
+      this._dataDir
+      |> path.join(#, 'lesson.md')
+      |> fs.readFileSync(#, 'utf8')
+      |> marked(#)
+    )
+  }
+}
 
-  return course
-})
-
+const COURSES = fs.readdirSync(COURSES_DIR).map(courseName => new Course(courseName))
 const COURSES_BY_SLUG = COURSES |> keyBy(#, 'slug')
 
 // This service acts as an access interface to actions related to courses,
@@ -58,10 +61,12 @@ const COURSES_BY_SLUG = COURSES |> keyBy(#, 'slug')
 // A.K.A "hiding the trash under the carpet" :).
 //
 // For development and for now, we store the courses inside this repo under /courses.
+//
+// TODO: memoize this for production
 const Courses = {
   findAll: _ => COURSES,
   findBySlug: slug => COURSES_BY_SLUG[slug],
-  findCourseLesson: ({ courseSlug, lessonSlug }) => COURSES_BY_SLUG[courseSlug].lessonsBySlug[lessonSlug]
+  findCourseLesson: ({ courseSlug, lessonSlug }) => COURSES_BY_SLUG[courseSlug].lessonsBySlug()[lessonSlug]
 }
 
 export default Courses
