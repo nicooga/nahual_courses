@@ -24,7 +24,12 @@ const Root = styled.div`
 `
 
 const Header = styled.div``
-const Sidebar = styled.div`width: 30%;`
+
+const Sidebar = styled.div`
+  width: 25%;
+  flex-shrink: 0;
+`
+
 const Body = styled.div`flex-grow: 1;`
 const MainContainer = styled.div`display: flex;`
 

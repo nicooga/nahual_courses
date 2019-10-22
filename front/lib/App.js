@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Link,
   useParams
 } from 'react-router-dom'
 import styled from 'styled-components'
@@ -23,6 +24,10 @@ const App = _props => (
   <ApolloProvider>
     <Router>
       <Root>
+        <Link to='/'>
+          <h1>Cursos Nahual</h1>
+        </Link>
+
         <Switch>
           <Route
             path='/cursos/:courseSlug/lecciones/:lessonSlug'

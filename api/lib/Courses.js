@@ -33,8 +33,8 @@ class Course {
 }
 
 class Lesson {
-  constructor(lessonsDir, lessonName) {
-    this._dataDir = path.join(lessonsDir, lessonName)
+  constructor(lessonsDir, name) {
+    this._dataDir = path.join(lessonsDir, name)
 
     const manifest = path.join(this._dataDir, 'manifest.yml') |> readYAMLFile(#)
 
@@ -43,12 +43,22 @@ class Lesson {
   }
 
   body() {
-    return (
-      this._dataDir
-      |> path.join(#, 'lesson.md')
-      |> fs.readFileSync(#, 'utf8')
-      |> marked(#)
-    )
+    try {
+      return (
+        this._dataDir
+        |> path.join(#, 'lesson.md')
+        |> fs.readFileSync(#, 'utf8')
+        |> marked(#)
+      )
+    } catch(error) {
+      return `
+        <div class='markdown-syntax-error'>
+          <strong>Error de sintaxis</strong>
+          <hr />
+          ${error.stack.replace("\n", "<br />")}
+        </div>
+      `
+    }
   }
 }
 

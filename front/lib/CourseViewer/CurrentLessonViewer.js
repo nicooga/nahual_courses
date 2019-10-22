@@ -8,6 +8,11 @@ const Root = styled.div`
     background-color: lightgrey;
     padding: 10px;
   }
+
+  .markdown-syntax-error {
+    background-color: red;
+    padding: 10px;
+  }
 `
 
 const GET_COURSE_LESSON = gql`
@@ -21,15 +26,9 @@ const GET_COURSE_LESSON = gql`
 
 const CurrentLessonViewer = ({ courseSlug, lessonSlug }) => {
   const { data, error, loading } = useQuery(GET_COURSE_LESSON, { variables: { courseSlug, lessonSlug } })
-
   if (loading) return (<div>... cargando lección</div>)
-
   const { courseLesson: lesson } = data
-
-  return (
-    <Root dangerouslySetInnerHTML={{ __html: lesson.body }}>
-    </Root>
-  )
+  return (<Root dangerouslySetInnerHTML={{ __html: lesson.body }} />)
 }
 
 export default CurrentLessonViewer
