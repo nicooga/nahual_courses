@@ -26,6 +26,18 @@ El primer paso va a ser instalar docker. Docker tiene excelente documentación p
 - [para Linux (Ubuntu en particular pero hay para otras distros también)](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 - [para MacOS](https://docs.docker.com/docker-for-mac/install/)
 
+Una vez tengas instalado docker, es cuestion de correr el siguiente comando:
+
+~~~bash
+docker-compose -f docker-compose.development.yml up --build
+~~~
+
+Este comando va a buildear las imágenes para cada servicio (API y front) y los va a correr.
+La primera vez puede tomar tiempo porque tiene que instalar muchas cosas.
+La segunda vez va a haber cacheado las imágenes, con lo cual el tiempo de inicio se vuelve casi instantáneo.
+
+Finalmente, es cuestión de abrir el sitio en http://localhost:8080.
+
 ### Opción 2: usando NodeJS
 
 Si ya estas familiarizado con el desarrollo en NodeJS y tenés instalado el lenguaje, puede que ésta opción te resulte más fácil.
@@ -56,41 +68,3 @@ foreman start
 ~~~
 
 Y finalmente abrir el sitio en http://localhost:8080.
-
-## Formato
-
-A cada curso le corresponde una carpeta bajo el directorio `/courses`.
-
-Cada curso tiene una cantidad variable de lecciónes.
-
-La estructura de un curso sería esta:
-
-~~~bash
-courses
-│
-└── curso_1 # el nombre de la carpeta no importa
-    │
-    ├── manifest.yml # Acá va la configuración del curso
-    └── lessons # Acá van las lecciones de este curso
-        │
-        ├── 01-lesson-1 # Lós números son opcionales, pero dan órden a las lecciones
-        │   ├── manifest.yml # Configuración de esta lección
-        │   └── lesson.md # La lección en formato Markdown
-        │
-        └── 02-lesson-2
-            └── ...
-~~~
-
-Los archivos de configuración `manifest.yml` se escriben en formation YAML (parecido al JSON, pero más poderoso).
-Por ahora la única configuración posible es espeficar la propiedad `title`, ya sea para el curso o la lección.
-
-Ejemplo de un archivo `manifest.yml`:
-
-~~~yaml
----
-title: Mi primer curso o lección
-~~~
-
-## Gracias!
-
-Esperamos con ansias ver pull requests en este proyecto para crear más cursos!
