@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  api:
+    build: ./api
+    environment:
+      COURSES_DIR: /courses
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./courses:/courses
+
+  front:
+    build: ./front
+    depends_on:
+      - api
+    ports:
+      - '8080:8080'

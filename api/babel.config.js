@@ -1,9 +1,4 @@
-const fs = require('fs')
-const projectWideBabelRC = JSON.parse(fs.readFileSync('../.babelrc'))
 module.exports = {
-  ...projectWideBabelRC,
-  plugins: [
-    ...(projectWideBabelRC.plugins || []),
-    ["@babel/plugin-proposal-pipeline-operator", { "proposal": "smart" }]
-  ]
+  presets:  [["@babel/preset-env", {"targets": {"node": "current"}}]],
+  plugins: [["@babel/plugin-proposal-pipeline-operator", { "proposal": "smart" }]]
 }

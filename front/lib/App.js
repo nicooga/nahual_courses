@@ -12,7 +12,6 @@ import ApolloProvider from './ApolloProvider'
 
 import CourseList from './CourseList'
 import CourseViewer from './CourseViewer'
-import CourseLesson from './CourseLesson'
 
 const Root = styled.div`
   display: flex;

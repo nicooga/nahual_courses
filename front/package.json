@@ -24,7 +24,8 @@
     "webpack": "^4.41.2"
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development --config ./webpack.config.js"
+    "start": "webpack-dev-server --mode development --config ./webpack.config.js --host 0.0.0.0",
+    "build": "webpack  --mode production"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",

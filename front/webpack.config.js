@@ -9,7 +9,8 @@ module.exports = {
       inject: true,
       title: 'Cursos Nahual',
       template: 'lib/index.html'
-    })
+    }),
+    new webpack.EnvironmentPlugin(['API_URL'])
   ],
   module: {
     rules: [

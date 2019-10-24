@@ -6,7 +6,7 @@ import realSlugify from 'slugify'
 import { keyBy } from 'lodash'
 import { highlight } from 'highlight.js'
 
-const COURSES_DIR = '../courses'
+const COURSES_DIR = process.env.COURSES_DIR || '../courses'
 
 marked.setOptions({ highlight: (code, lang) => highlight(lang, code).value })
 
