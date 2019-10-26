@@ -5,10 +5,10 @@ services:
     environment:
       COURSES_DIR: /courses
     volumes:
-      - ./courses:/courses
+      - /courses:/courses
 
   front:
-    environment:
-      API_URL: http://localhost:3000
     ports:
-      - '8080:8080'
+      - '80:8080'
+    environment:
+      API_URL: http://204.48.18.156:3000

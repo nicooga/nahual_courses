@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+# Put the deploy vars in '.deploy_vars' bash file
+# This file should set the following variables:
+# REMOTE_HOST=123.123.123.123
+# CERTIFICATES_DIR=/home/nicolas/.docker/machine/machines/nahual-courses
+source ./.deploy_vars
+
+# Copy courses folder to the remote host
+ssh $REMOTE_HOST mkdir -p /courses
+rsync -raz --progress ./courses/* $REMOTE_HOST:/courses/
+
+# Build and run all services in background
+docker-compose \
+  -f docker-compose.default.yml \
+  -f docker-compose.production.yml \
+
+  # Flags for remote usage
+  --tls-verify \
+  --tlscacert="$CERTIFICATES_DIR/ca.pem" \
+  --tlscert="$CERTIFICATES_DIR/cert.pem" \
+  --tlskey="$CERTIFICATES_DIR/key.pem" \
+  -H=$REMOTE_HOST:2376 \
+
+  up --build -d

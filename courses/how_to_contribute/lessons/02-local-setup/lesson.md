@@ -30,6 +30,8 @@ Una vez tengas instalado docker, es cuestion de correr el siguiente comando:
 
 ~~~bash
 docker-compose -f docker-compose.development.yml up --build
+# o lo mismo, pero a través de este pequeño script, para ahorrarnos unas lineas
+./scripts/run
 ~~~
 
 Este comando va a buildear las imágenes para cada servicio (API y front) y los va a correr.

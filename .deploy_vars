@@ -1,0 +1,2 @@
+export REMOTE_HOST=204.48.18.156
+export CERTIFICATES_DIR=/home/nicolas/.docker/machine/machines/nahual-courses
